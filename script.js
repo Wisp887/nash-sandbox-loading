@@ -1,325 +1,100 @@
-(function () {
-  "use strict";
+# Наш Sandbox — Loading Screen v0.4
 
-  var config = window.NASH_LOADING_CONFIG || {};
-  var state = {
-    totalFiles: 0,
-    neededFiles: 0,
-    currentStage: 0,
-    gotGameDetails: false,
-    steamId: "",
-    tipIndex: 0
-  };
+Черновик v0.4 для `sv_loadingurl`, собранный по актуальному архиву сервера.
 
-  function byId(id) {
-    return document.getElementById(id);
-  }
+## Что изменилось относительно v0.1
 
-  function clean(value, fallback) {
-    var text = String(value === undefined || value === null ? "" : value).replace(/^\s+|\s+$/g, "");
-    return text || (fallback || "—");
-  }
+- Новый cinematic-макет вместо интерфейса в стиле админ-панели.
+- Атмосферный Bigcity-фон полностью на CSS, без тяжёлого видео или внешних ресурсов.
+- Четыре честных этапа подключения: **Сервер → Контент → Lua → Вход**.
+- Процент показывается только когда GMod действительно сообщает `SetFilesTotal/SetFilesNeeded`.
+- Динамическая тема по карте.
+- Настройки сервера, версии, подсказок и карт вынесены в `config.js`.
+- Новый локальный SVG-логотип.
+- JS написан без `URLSearchParams`, стрелочных функций и других необязательных современных API.
+- Нет внешних шрифтов, аналитики, API и CDN.
 
-  function queryValue(name) {
-    var query = window.location.search || "";
-    var parts = query.replace(/^\?/, "").split("&");
-    var target = String(name).toLowerCase();
-    var i;
+## Актуальные данные из переданного архива
 
-    for (i = 0; i < parts.length; i += 1) {
-      if (!parts[i]) { continue; }
-      var pair = parts[i].split("=");
-      var key = decodeURIComponent(pair[0] || "").toLowerCase();
-      if (key === target) {
-        return decodeURIComponent((pair.slice(1).join("=") || "").replace(/\+/g, " "));
-      }
-    }
+- Server name: `Наш Sandbox`
+- Core: `v0.44.0`
+- Primary map: `gm_bigcity_improved_rp`
+- Workshop collection: `3805955116`
+- Roles: `Строитель` / `PvP` (+ admin/creator authority)
+- Safe spawn: зелёная зона
+- Core UI accent: `#4EDD7F`
+- Builder: `#5AB4FF`
+- PvP: `#E15F5F`
 
-    return "";
-  }
+> В `server.cfg` и `srcds_workshop_ids.txt` ещё встречается старый номер `v0.43.9` в комментариях. Активный `SC.Version` и `addon.json` в архиве — `v0.44.0`, поэтому loading screen использует именно его.
 
-  function setText(id, value) {
-    var node = byId(id);
-    if (node) { node.textContent = value; }
-  }
+## Загрузка на GitHub Pages
 
-  function applyConfig() {
-    var serverName = config.serverName || "Наш Sandbox";
-    var coreVersion = config.coreVersion || "0.24.0";
+Замени файлы в корне репозитория на содержимое этой папки:
 
-    setText("serverName", serverName);
-    setText("serverNameTop", serverName);
-    setText("coreVersionTop", "SandboxCore v" + coreVersion);
-    setText("coreVersionBottom", "Core v" + coreVersion);
+```text
+index.html
+styles.css
+script.js
+config.js
+assets/
+```
 
-    if (config.points && config.points.length) {
-      var container = byId("serverPoints");
-      var rows = container ? container.getElementsByTagName("span") : [];
-      var i;
-      for (i = 0; i < rows.length && i < config.points.length; i += 1) {
-        rows[i].textContent = config.points[i];
-      }
-    }
-  }
+После commit GitHub Pages оставит тот же URL. Серверный `sv_loadingurl` менять не нужно.
 
-  function mapData(mapName) {
-    var maps = config.maps || {};
-    return maps[mapName] || {
-      label: mapName,
-      theme: "generic",
-      backgroundImage: ""
-    };
-  }
+## Проверка без GMod
 
-  function setMap(mapName) {
-    var name = clean(mapName, config.primaryMap || "gm_bigcity_improved_rp");
-    var data = mapData(name);
-    var body = document.body;
-    var className = body.className || "";
-    var classes = className.split(/\s+/);
-    var kept = [];
-    var i;
+Открой опубликованную страницу так:
 
-    for (i = 0; i < classes.length; i += 1) {
-      if (classes[i] && classes[i].indexOf("theme-") !== 0) {
-        kept.push(classes[i]);
-      }
-    }
-    kept.push("theme-" + (data.theme || "generic"));
-    body.className = kept.join(" ");
+```text
+https://YOURNAME.github.io/nash-sandbox-loading/?preview=1
+```
 
-    setText("mapName", name);
-    setText("mapChip", name);
+Можно проверить тему карты:
 
-    var photo = byId("mapPhoto");
-    if (photo) {
-      if (data.backgroundImage) {
-        photo.style.backgroundImage = "url('" + String(data.backgroundImage).replace(/'/g, "%27") + "')";
-        photo.style.opacity = "0.66";
-        if (body.className.indexOf("has-map-photo") === -1) {
-          body.className += " has-map-photo";
-        }
-      } else {
-        photo.style.backgroundImage = "none";
-        photo.style.opacity = "0";
-        body.className = body.className.replace(/\bhas-map-photo\b/g, "").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
-      }
-    }
-  }
+```text
+?preview=1&Map=gm_construct
+?preview=1&Map=gm_flatgrass
+```
 
-  function setStage(stage, status) {
-    var next = Math.max(0, Math.min(3, Number(stage) || 0));
-    if (next > state.currentStage) {
-      state.currentStage = next;
-    }
+## Свой фон карты позже
 
-    var line = byId("stageLine");
-    var nodes = line ? line.getElementsByClassName("stage") : [];
-    var rails = line ? line.getElementsByClassName("stage-rail") : [];
-    var i;
+Положи изображение, например:
 
-    for (i = 0; i < nodes.length; i += 1) {
-      nodes[i].className = "stage";
-      if (i < state.currentStage) {
-        nodes[i].className += " is-done";
-      } else if (i === state.currentStage) {
-        nodes[i].className += " is-active";
-      }
-    }
+```text
+assets/bigcity.webp
+```
 
-    for (i = 0; i < rails.length; i += 1) {
-      rails[i].className = "stage-rail" + (i < state.currentStage ? " is-done" : "");
-    }
+И в `config.js` у нужной карты укажи:
 
-    if (status) {
-      setText("statusText", status);
-    }
+```js
+backgroundImage: "./assets/bigcity.webp"
+```
 
-    var topLabels = ["получаем сервер", "загружаем контент", "запускаем Lua", "входим в игру"];
-    setText("topState", topLabels[state.currentStage]);
-  }
+CSS-город останется фоном/подложкой, а фотография появится поверх него с затемнением.
 
-  function setIndeterminate(caption) {
-    var track = byId("progressTrack");
-    if (track) {
-      track.className = "progress-track is-indeterminate";
-      track.removeAttribute("aria-valuenow");
-    }
-    if (byId("progressFill")) {
-      byId("progressFill").style.width = "0%";
-    }
-    setText("progressNumber", "—");
-    setText("progressCaption", caption || "этап подключения");
-  }
+## Конфиг GMod
 
-  function setFileProgress() {
-    var track = byId("progressTrack");
-    var total = state.totalFiles;
-    var needed = state.neededFiles;
+У тебя уже прописано:
 
-    if (total > 0) {
-      var done = Math.max(0, Math.min(total, total - needed));
-      var percent = Math.max(0, Math.min(100, Math.round((done / total) * 100)));
+```cfg
+sv_loadingurl "https://wisp887.github.io/nash-sandbox-loading/"
+```
 
-      if (track) {
-        track.className = "progress-track";
-        track.setAttribute("aria-valuenow", String(percent));
-      }
-      if (byId("progressFill")) {
-        byId("progressFill").style.width = percent + "%";
-      }
-      setText("progressNumber", percent + "%");
-      setText("progressCaption", "контент");
-      setText("fileCount", "файлы: " + done + " / " + total);
+Можно оставить именно так. Дополнительные query-параметры необязательны, потому что GMod передаёт карту через `GameDetails()`.
 
-      if (needed <= 0) {
-        setStage(2, "Контент загружен. Запускаем клиентские скрипты…");
-        setText("fileStatus", "Workshop-контент готов");
-      } else {
-        setStage(1);
-      }
-    } else if (needed > 0) {
-      setText("fileCount", "осталось файлов: " + needed);
-    }
-  }
+## Важно
 
-  function friendlyStatus(raw) {
-    var text = clean(raw, "Подключение…");
-    var low = text.toLowerCase();
+Не загружай в этот публичный репозиторий папки `garrysmod/cfg`, серверные Lua-файлы, токены или другие приватные данные. GitHub Pages должен содержать только файлы loading screen.
 
-    if (low.indexOf("retriev") !== -1 || low.indexOf("connect") !== -1 || low.indexOf("auth") !== -1) {
-      return { stage: 0, text: "Получаем информацию о сервере…" };
-    }
-    if (low.indexOf("workshop") !== -1 || low.indexOf("download") !== -1 || low.indexOf("mount") !== -1) {
-      return { stage: 1, text: "Загружаем и подключаем контент сервера…" };
-    }
-    if (low.indexOf("lua") !== -1 || low.indexOf("script") !== -1) {
-      return { stage: 2, text: "Запускаем клиентские Lua-скрипты…" };
-    }
-    if (low.indexOf("sending client info") !== -1 || low.indexOf("spawn") !== -1 || low.indexOf("ready") !== -1 || low.indexOf("joining") !== -1) {
-      return { stage: 3, text: "Финальная синхронизация. Входим в игру…" };
-    }
 
-    return { stage: state.currentStage, text: text };
-  }
+## Фон v0.4
 
-  function showTip(index) {
-    var tips = config.tips || [];
-    if (!tips.length) { return; }
+Для `gm_bigcity_improved_rp` используется локальный файл `assets/bigcity-night.jpg`. Он грузится с того же GitHub Pages и не требует внешних CDN или API. Для замены фона достаточно заменить этот файл или изменить `backgroundImage` в `config.js`.
 
-    var tip = tips[index % tips.length];
-    var textNode = byId("tipText");
-    var tagNode = byId("tipTag");
-
-    if (textNode) { textNode.style.opacity = "0"; }
-    if (tagNode) { tagNode.style.opacity = "0"; }
-
-    window.setTimeout(function () {
-      setText("tipText", tip.text || "");
-      setText("tipTag", tip.tag || "TIP");
-      if (textNode) { textNode.style.opacity = "1"; }
-      if (tagNode) { tagNode.style.opacity = "1"; }
-    }, 180);
-  }
-
-  function startTips() {
-    var tips = config.tips || [];
-    if (!tips.length) { return; }
-
-    state.tipIndex = Math.floor(Math.random() * tips.length);
-    setText("tipText", tips[state.tipIndex].text || "");
-    setText("tipTag", tips[state.tipIndex].tag || "TIP");
-
-    window.setInterval(function () {
-      state.tipIndex = (state.tipIndex + 1) % tips.length;
-      showTip(state.tipIndex);
-    }, 7200);
-  }
-
-  window.GameDetails = function (servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-    state.gotGameDetails = true;
-    state.steamId = clean(steamid, "");
-
-    var name = clean(servername, config.serverName || "Наш Sandbox");
-    setText("serverName", name);
-    setText("serverNameTop", name);
-    setText("gameMode", clean(gamemode, "sandbox"));
-    setText("maxPlayers", clean(maxplayers, "—"));
-    setMap(clean(mapname, config.primaryMap || "gm_bigcity_improved_rp"));
-    setStage(0, "Сервер найден. Подготавливаем подключение…");
-  };
-
-  window.SetFilesTotal = function (total) {
-    state.totalFiles = Math.max(0, Number(total) || 0);
-    state.neededFiles = state.totalFiles;
-    if (state.totalFiles > 0) {
-      setStage(1, "Проверяем Workshop-контент…");
-    }
-    setFileProgress();
-  };
-
-  window.SetFilesNeeded = function (needed) {
-    state.neededFiles = Math.max(0, Number(needed) || 0);
-    setFileProgress();
-  };
-
-  window.DownloadingFile = function (fileName) {
-    var file = clean(fileName, "ресурс сервера");
-    setStage(1);
-    setText("fileStatus", "Загрузка: " + file);
-  };
-
-  window.SetStatusChanged = function (status) {
-    var result = friendlyStatus(status);
-    setStage(result.stage, result.text);
-
-    if (state.totalFiles <= 0 || result.stage !== 1) {
-      setIndeterminate(result.stage === 2 ? "Lua" : (result.stage === 3 ? "вход" : "этап подключения"));
-    }
-  };
-
-  applyConfig();
-
-  var mapParam = queryValue("Map") || queryValue("map") || config.primaryMap || "gm_bigcity_improved_rp";
-  var steamParam = queryValue("SteamId") || queryValue("steamid");
-  setMap(mapParam);
-  if (steamParam) { state.steamId = steamParam; }
-  setIndeterminate("ожидаем данные");
-  startTips();
-
-  if (queryValue("preview") === "1") {
-    window.GameDetails(config.serverName || "Наш Sandbox", window.location.href, mapParam, 40, steamParam || "7656119XXXXXXXXXX", "sandbox");
-
-    window.setTimeout(function () {
-      window.SetStatusChanged("Downloading Workshop content");
-      window.SetFilesTotal(46);
-
-      var files = [
-        "materials/sandbox_core/interface.vmt",
-        "models/props_c17/oildrum001.mdl",
-        "sound/sandbox_core/ui_ready.wav",
-        "lua/autorun/sandbox_core_init.lua"
-      ];
-      var needed = 46;
-      var fileIndex = 0;
-
-      var timer = window.setInterval(function () {
-        needed = Math.max(0, needed - 2);
-        window.SetFilesNeeded(needed);
-        window.DownloadingFile(files[fileIndex % files.length]);
-        fileIndex += 1;
-
-        if (needed <= 0) {
-          window.clearInterval(timer);
-          window.setTimeout(function () {
-            window.SetStatusChanged("Starting Lua");
-            window.setTimeout(function () {
-              window.SetStatusChanged("Sending client info");
-              setText("fileStatus", "Контент готов · финальная синхронизация");
-            }, 1400);
-          }, 700);
-        }
-      }, 160);
-    }, 750);
-  }
-}());
+## Что нового в v0.4
+- более крупный фирменный wordmark и новый знак;
+- полноценные карточки Builder / PvP с локальными SVG-иконками;
+- серверные возможности теперь показаны иконками вместо цветных точек;
+- нижняя панель стала HUD загрузки с реальным процентом только во время файловой загрузки;
+- макет отдельно ужат для 1366×768.

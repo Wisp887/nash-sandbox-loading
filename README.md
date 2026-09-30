@@ -1,93 +1,167 @@
-# Наш Sandbox — Loading Screen v0.3
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0f12">
+  <title>Наш Sandbox — подключение</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="theme-bigcity">
+  <div class="scene" id="scene" aria-hidden="true">
+    <div class="map-photo" id="mapPhoto"></div>
+    <div class="city-glow city-glow-a"></div>
+    <div class="city-glow city-glow-b"></div>
+    <div class="skyline skyline-far"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="skyline skyline-near"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="scene-grid"></div>
+    <div class="scene-scan"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+  </div>
 
-Черновик v0.3 для `sv_loadingurl`, собранный по актуальному архиву сервера.
+  <main class="screen">
+    <header class="topbar">
+      <div class="compact-brand">
+        <img src="./assets/logo-mark.svg" class="brand-mark" alt="">
+        <div class="brand-copy">
+          <strong id="serverNameTop">Наш Sandbox</strong>
+          <span>Garry's Mod Community</span>
+        </div>
+      </div>
 
-## Что изменилось относительно v0.1
+      <div class="top-meta">
+        <span class="core-chip" id="coreVersionTop">SandboxCore v0.24.0</span>
+        <span class="connect-state"><b></b><span id="topState">подключение</span></span>
+        <span class="map-chip" id="mapChip">gm_bigcity_improved_rp</span>
+      </div>
+    </header>
 
-- Новый cinematic-макет вместо интерфейса в стиле админ-панели.
-- Атмосферный Bigcity-фон полностью на CSS, без тяжёлого видео или внешних ресурсов.
-- Четыре честных этапа подключения: **Сервер → Контент → Lua → Вход**.
-- Процент показывается только когда GMod действительно сообщает `SetFilesTotal/SetFilesNeeded`.
-- Динамическая тема по карте.
-- Настройки сервера, версии, подсказок и карт вынесены в `config.js`.
-- Новый локальный SVG-логотип.
-- JS написан без `URLSearchParams`, стрелочных функций и других необязательных современных API.
-- Нет внешних шрифтов, аналитики, API и CDN.
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow"><span></span> СВОБОДНЫЙ SANDBOX ДЛЯ СВОИХ ИДЕЙ</div>
 
-## Актуальные данные из переданного архива
+        <div class="wordmark" aria-label="Наш Sandbox">
+          <span class="wordmark-small">НАШ</span>
+          <h1>SANDBOX</h1>
+          <div class="wordmark-rule"><i></i><b>БОЛЬШЕ ЧЕМ ПРОСТО СЕРВЕР</b><i></i></div>
+        </div>
 
-- Server name: `Наш Sandbox`
-- Core: `v0.34.0`
-- Primary map: `gm_bigcity_improved_rp`
-- Workshop collection: `3805955116`
-- Roles: `Строитель` / `PvP` (+ admin/creator authority)
-- Safe spawn: зелёная зона
-- Core UI accent: `#4EDD7F`
-- Builder: `#5AB4FF`
-- PvP: `#E15F5F`
+        <p class="slogan">Строй <i>•</i> Сражайся <i>•</i> Экспериментируй</p>
+        <p class="hero-note">Выбирай свой стиль игры. Строитель получает свободу для творчества, PvP — полноценный боевой режим. Остальные системы работают тихо и не мешают песочнице.</p>
 
-> В `server.cfg` и `srcds_workshop_ids.txt` ещё встречается старый номер `v0.33.9` в комментариях. Активный `SC.Version` и `addon.json` в архиве — `v0.34.0`, поэтому loading screen использует именно его.
+        <div class="mode-row">
+          <article class="mode-card builder-card">
+            <span class="mode-index">01</span>
+            <div class="mode-icon"><img src="./assets/icon-builder.svg" alt=""></div>
+            <div class="mode-copy">
+              <span class="mode-overline">РЕЖИМ</span>
+              <strong>Строитель</strong>
+              <span class="mode-description">Создавай без ограничений и случайных перестрелок.</span>
+              <div class="mode-tags"><em>без PvP-урона</em><em>noclip</em></div>
+            </div>
+          </article>
 
-## Загрузка на GitHub Pages
+          <article class="mode-card pvp-card">
+            <span class="mode-index">02</span>
+            <div class="mode-icon"><img src="./assets/icon-pvp.svg" alt=""></div>
+            <div class="mode-copy">
+              <span class="mode-overline">РЕЖИМ</span>
+              <strong>PvP</strong>
+              <span class="mode-description">Полноценные сражения с боевыми ограничениями.</span>
+              <div class="mode-tags"><em>полный урон</em><em>noclip off</em></div>
+            </div>
+          </article>
+        </div>
+      </div>
 
-Замени файлы в корне репозитория на содержимое этой папки:
+      <aside class="info-card">
+        <div class="info-card-head">
+          <div>
+            <span class="micro-label">ПОДКЛЮЧЕНИЕ К СЕРВЕРУ</span>
+            <h2 id="serverName">Наш Sandbox</h2>
+          </div>
+          <span class="status-light"></span>
+        </div>
 
-```text
-index.html
-styles.css
-script.js
-config.js
-assets/
-```
+        <div class="session-grid">
+          <div class="session-cell session-map">
+            <img src="./assets/icon-map.svg" alt="">
+            <div><span>Карта</span><strong id="mapName">gm_bigcity_improved_rp</strong></div>
+          </div>
+          <div class="session-cell">
+            <img src="./assets/icon-gamepad.svg" alt="">
+            <div><span>Режим</span><strong id="gameMode">sandbox</strong></div>
+          </div>
+          <div class="session-cell">
+            <img src="./assets/icon-players.svg" alt="">
+            <div><span>Слоты</span><strong id="maxPlayers">—</strong></div>
+          </div>
+        </div>
 
-После commit GitHub Pages оставит тот же URL. Серверный `sv_loadingurl` менять не нужно.
+        <div class="features-title"><span>ОСОБЕННОСТИ СЕРВЕРА</span><i></i></div>
+        <div class="feature-list">
+          <div class="feature-row"><img src="./assets/icon-shield.svg" alt=""><div><strong>Зелёная зона</strong><span>Безопасный spawn и общение</span></div></div>
+          <div class="feature-row"><img src="./assets/icon-progress.svg" alt=""><div><strong>Прогрессия</strong><span>Достижения, титулы и лидеры</span></div></div>
+          <div class="feature-row"><img src="./assets/icon-guard.svg" alt=""><div><strong>Защита сервера</strong><span>Адаптивный TPS и anti-crash</span></div></div>
+          <div class="feature-row"><img src="./assets/icon-voice.svg" alt=""><div><strong>Голосовой чат</strong><span>Локальный и глобальный режимы</span></div></div>
+        </div>
 
-## Проверка без GMod
+        <div class="tip-box">
+          <div class="tip-icon">?</div>
+          <div class="tip-body">
+            <div class="tip-head"><span class="micro-label">ПОДСКАЗКА</span><span class="tip-tag" id="tipTag">F2</span></div>
+            <p id="tipText">Меню сервера и выбор режима.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
 
-Открой опубликованную страницу так:
+    <section class="connection-panel" aria-live="polite">
+      <div class="stage-line" id="stageLine">
+        <div class="stage is-active" data-stage="0"><span class="stage-dot">1</span><div><strong>Сервер</strong><small>информация</small></div></div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="1"><span class="stage-dot">2</span><div><strong>Контент</strong><small>Workshop</small></div></div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="2"><span class="stage-dot">3</span><div><strong>Lua</strong><small>клиент</small></div></div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="3"><span class="stage-dot">4</span><div><strong>Вход</strong><small>в игру</small></div></div>
+      </div>
 
-```text
-https://YOURNAME.github.io/nash-sandbox-loading/?preview=1
-```
+      <div class="loading-hud">
+        <div class="loading-copy">
+          <span class="micro-label" id="statusKicker">ПОДКЛЮЧЕНИЕ</span>
+          <strong id="statusText">Получаем информацию о сервере…</strong>
+          <span class="file-name" id="fileStatus">Подготавливаем клиент…</span>
+        </div>
 
-Можно проверить тему карты:
+        <div class="progress-cluster">
+          <div class="progress-readout">
+            <span id="progressCaption">ожидаем данные</span>
+            <strong id="progressNumber">—</strong>
+          </div>
+          <div class="progress-track is-indeterminate" id="progressTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-pulse"></div>
+          </div>
+          <span class="file-count" id="fileCount">файлы: —</span>
+        </div>
+      </div>
+    </section>
 
-```text
-?preview=1&Map=gm_construct
-?preview=1&Map=gm_flatgrass
-```
+    <footer class="footer">
+      <div class="hotkeys">
+        <div class="hotkey"><span>F2</span><b>меню сервера</b></div>
+        <div class="hotkey"><span>TAB</span><b>игроки</b></div>
+        <div class="hotkey"><span>V</span><b>голосовой чат</b></div>
+      </div>
+      <div class="footer-rule">ИГРАЙ <i>•</i> СОЗДАВАЙ <i>•</i> ОБЩАЙСЯ</div>
+      <div class="footer-version" id="coreVersionBottom">Core v0.24.0</div>
+    </footer>
+  </main>
 
-## Свой фон карты позже
-
-Положи изображение, например:
-
-```text
-assets/bigcity.webp
-```
-
-И в `config.js` у нужной карты укажи:
-
-```js
-backgroundImage: "./assets/bigcity.webp"
-```
-
-CSS-город останется фоном/подложкой, а фотография появится поверх него с затемнением.
-
-## Конфиг GMod
-
-У тебя уже прописано:
-
-```cfg
-sv_loadingurl "https://wisp887.github.io/nash-sandbox-loading/"
-```
-
-Можно оставить именно так. Дополнительные query-параметры необязательны, потому что GMod передаёт карту через `GameDetails()`.
-
-## Важно
-
-Не загружай в этот публичный репозиторий папки `garrysmod/cfg`, серверные Lua-файлы, токены или другие приватные данные. GitHub Pages должен содержать только файлы loading screen.
-
-
-## Фон v0.3
-
-Для `gm_bigcity_improved_rp` используется локальный файл `assets/bigcity-night.jpg`. Он грузится с того же GitHub Pages и не требует внешних CDN или API. Для замены фона достаточно заменить этот файл или изменить `backgroundImage` в `config.js`.
+  <script src="./config.js"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
