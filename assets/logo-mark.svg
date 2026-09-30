@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Наш Sandbox">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4edd7f" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#4edd7f" stop-opacity=".04"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#171b20" stroke="#4edd7f" stroke-opacity=".45"/>
+  <rect x="8" y="8" width="48" height="48" rx="10" fill="url(#g)"/>
+  <path d="M18 18v28M31 18v28M18 32h13" fill="none" stroke="#f0f2f5" stroke-width="5" stroke-linecap="square"/>
+  <path d="M47 22c-2.4-2.6-5.1-4-8.1-4-6.3 0-10.9 5.6-10.9 14s4.6 14 10.9 14c3.1 0 5.9-1.4 8.1-4" fill="none" stroke="#4edd7f" stroke-width="4" stroke-linecap="round"/>
+</svg>

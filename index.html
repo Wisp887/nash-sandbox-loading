@@ -1,123 +1,171 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#121418" />
-  <title>Наш Sandbox — загрузка</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#121418">
+  <title>Наш Sandbox — подключение</title>
+  <link rel="stylesheet" href="./styles.css">
 </head>
-<body>
-  <div class="background" aria-hidden="true">
-    <div class="grid"></div>
-    <div class="glow glow-a"></div>
-    <div class="glow glow-b"></div>
-    <div class="scanline"></div>
+<body class="theme-bigcity">
+  <div class="scene" id="scene" aria-hidden="true">
+    <div class="map-photo" id="mapPhoto"></div>
+    <div class="city-glow city-glow-a"></div>
+    <div class="city-glow city-glow-b"></div>
+    <div class="skyline skyline-far">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="skyline skyline-near">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <div class="scene-grid"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
   </div>
 
   <main class="screen">
     <header class="topbar">
-      <div class="brand" aria-label="Наш Sandbox">
-        <div class="brand-mark">НС</div>
-        <div>
-          <div class="brand-name" id="serverNameTop">Наш Sandbox</div>
-          <div class="brand-kicker">SandboxCore</div>
+      <div class="compact-brand">
+        <img src="./assets/logo-mark.svg" class="brand-mark" alt="">
+        <div class="brand-copy">
+          <strong id="serverNameTop">Наш Sandbox</strong>
+          <span id="coreVersionTop">SandboxCore v0.24.0</span>
         </div>
       </div>
 
-      <div class="top-pills">
-        <span class="pill pill-live"><span class="dot"></span> сервер подключается</span>
-        <span class="pill">Core v0.24.1</span>
+      <div class="top-meta">
+        <span class="connect-state"><b></b><span id="topState">подключение</span></span>
+        <span class="map-chip" id="mapChip">gm_bigcity_improved_rp</span>
       </div>
     </header>
 
-    <section class="hero-grid">
-      <div class="hero-copy">
+    <section class="hero">
+      <div class="hero-main">
         <div class="eyebrow">СВОБОДНЫЙ SANDBOX</div>
-        <h1>Строй. Сражайся.<br><span>Экспериментируй.</span></h1>
-        <p class="lead">Два режима игры, защищённый spawn и серверные системы, которые не мешают делать то, ради чего существует Sandbox.</p>
+        <div class="wordmark" aria-label="Наш Sandbox">
+          <span class="wordmark-small">НАШ</span>
+          <h1>SANDBOX</h1>
+        </div>
+        <p class="slogan">Строй <i>•</i> Сражайся <i>•</i> Экспериментируй</p>
+        <p class="hero-note">Выбирай свой стиль игры. Строй без PvP-урона или переходи в боевой режим — серверные системы остаются на втором плане.</p>
 
-        <div class="feature-row">
-          <div class="feature feature-builder">
-            <div class="feature-icon">B</div>
-            <div>
+        <div class="mode-row">
+          <article class="mode-card builder-card">
+            <span class="mode-index">01</span>
+            <div class="mode-icon">B</div>
+            <div class="mode-copy">
               <strong>Строитель</strong>
-              <span>PvP-урон выключен, noclip доступен</span>
+              <span>Без PvP-урона · noclip доступен</span>
             </div>
-          </div>
-          <div class="feature feature-pvp">
-            <div class="feature-icon">P</div>
-            <div>
+          </article>
+
+          <article class="mode-card pvp-card">
+            <span class="mode-index">02</span>
+            <div class="mode-icon">P</div>
+            <div class="mode-copy">
               <strong>PvP</strong>
-              <span>Боевой режим без noclip</span>
+              <span>Боевой режим · noclip отключён</span>
             </div>
-          </div>
+          </article>
         </div>
       </div>
 
-      <aside class="session-card">
-        <div class="card-heading">
+      <aside class="info-card">
+        <div class="info-card-head">
           <div>
-            <span class="card-label">СЕССИЯ</span>
+            <span class="micro-label">ТЕКУЩАЯ СЕССИЯ</span>
             <h2 id="serverName">Наш Sandbox</h2>
           </div>
-          <div class="status-orb" title="Подключение"></div>
+          <span class="status-light"></span>
         </div>
 
-        <div class="session-stats">
-          <div class="stat">
+        <div class="server-facts">
+          <div class="server-fact">
             <span>Карта</span>
             <strong id="mapName">gm_bigcity_improved_rp</strong>
           </div>
-          <div class="stat">
-            <span>Режим</span>
-            <strong id="gameMode">sandbox</strong>
-          </div>
-          <div class="stat">
-            <span>Слоты</span>
-            <strong id="maxPlayers">40</strong>
-          </div>
-          <div class="stat">
-            <span>SteamID64</span>
-            <strong id="steamId">ожидание…</strong>
+          <div class="server-fact split-fact">
+            <div>
+              <span>Режим</span>
+              <strong id="gameMode">sandbox</strong>
+            </div>
+            <div>
+              <span>Слоты</span>
+              <strong id="maxPlayers">—</strong>
+            </div>
           </div>
         </div>
 
-        <div class="tip-card">
-          <span class="tip-kicker">ПОДСКАЗКА</span>
-          <p id="tipText">F2 — меню сервера и выбор режима.</p>
+        <div class="server-points" id="serverPoints">
+          <div><b class="point-dot safe"></b><span>Зелёная зона — безопасный spawn</span></div>
+          <div><b class="point-dot progression"></b><span>Прогрессия, достижения и титулы</span></div>
+          <div><b class="point-dot protection"></b><span>Защита построек и адаптивный TPS guard</span></div>
+        </div>
+
+        <div class="tip-box">
+          <div class="tip-head">
+            <span class="micro-label">ПОДСКАЗКА</span>
+            <span class="tip-tag" id="tipTag">F2</span>
+          </div>
+          <p id="tipText">Меню сервера и выбор режима.</p>
         </div>
       </aside>
     </section>
 
-    <section class="loading-panel" aria-live="polite">
-      <div class="loading-head">
-        <div>
-          <span class="loading-label">ПОДКЛЮЧЕНИЕ</span>
-          <strong id="statusText">Получаем информацию о сервере…</strong>
+    <section class="connection-panel" aria-live="polite">
+      <div class="stage-line" id="stageLine">
+        <div class="stage is-active" data-stage="0">
+          <span class="stage-dot">1</span>
+          <div><strong>Сервер</strong><small>информация</small></div>
         </div>
-        <div class="progress-number" id="progressNumber">0%</div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="1">
+          <span class="stage-dot">2</span>
+          <div><strong>Контент</strong><small>Workshop</small></div>
+        </div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="2">
+          <span class="stage-dot">3</span>
+          <div><strong>Lua</strong><small>клиент</small></div>
+        </div>
+        <span class="stage-rail"></span>
+        <div class="stage" data-stage="3">
+          <span class="stage-dot">4</span>
+          <div><strong>Вход</strong><small>в игру</small></div>
+        </div>
       </div>
 
-      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
-        <div class="progress-fill" id="progressFill"></div>
-        <div class="progress-shimmer"></div>
-      </div>
+      <div class="loading-row">
+        <div class="loading-copy">
+          <span class="micro-label" id="statusKicker">ПОДКЛЮЧЕНИЕ</span>
+          <strong id="statusText">Получаем информацию о сервере…</strong>
+          <span class="file-name" id="fileStatus">Подготавливаем клиент…</span>
+        </div>
 
-      <div class="download-row">
-        <span id="fileStatus">Подготавливаем клиент…</span>
-        <span id="fileCount">файлы: —</span>
+        <div class="real-progress">
+          <div class="progress-meta">
+            <span id="progressCaption">ожидаем данные</span>
+            <strong id="progressNumber">—</strong>
+          </div>
+          <div class="progress-track is-indeterminate" id="progressTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-pulse"></div>
+          </div>
+          <span class="file-count" id="fileCount">файлы: —</span>
+        </div>
       </div>
     </section>
 
-    <footer>
-      <div><span class="key">F2</span> меню и режимы</div>
-      <div><span class="key">TAB</span> игроки и профиль</div>
+    <footer class="footer">
+      <div class="hotkey"><span>F2</span> меню и режимы</div>
+      <div class="hotkey"><span>TAB</span> игроки и профиль</div>
       <div class="footer-rule">Не мешай другим играть в выбранном ими стиле.</div>
+      <div class="footer-version" id="coreVersionBottom">Core v0.24.0</div>
     </footer>
   </main>
 
+  <script src="./config.js"></script>
   <script src="./script.js"></script>
 </body>
 </html>

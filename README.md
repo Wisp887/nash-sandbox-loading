@@ -1,44 +1,88 @@
-# Наш Sandbox — loading screen (черновик)
+# Наш Sandbox — Loading Screen v0.2
 
-Черновая статическая страница для `sv_loadingurl`, собранная по конфигам **Наш Sandbox / SandboxCore v0.24.1**.
+Черновик v0.2 для `sv_loadingurl`, собранный по актуальному архиву сервера.
 
-## Что уже работает
+## Что изменилось относительно v0.1
 
-- дизайн в цветах SandboxCore (`#121418`, `#4EDD7F`, Builder `#5AB4FF`, PvP `#E15F5F`);
-- `GameDetails(...)`: имя сервера, карта, maxplayers, SteamID64, gamemode;
-- `SetFilesTotal(...)` / `SetFilesNeeded(...)`: прогресс скачивания файлов;
-- `DownloadingFile(...)`: текущий файл;
-- `SetStatusChanged(...)`: текущий статус подключения;
-- адаптивная вёрстка;
-- никаких внешних библиотек, шрифтов и CDN;
-- тест в обычном браузере: добавь `?preview=1` к адресу.
+- Новый cinematic-макет вместо интерфейса в стиле админ-панели.
+- Атмосферный Bigcity-фон полностью на CSS, без тяжёлого видео или внешних ресурсов.
+- Четыре честных этапа подключения: **Сервер → Контент → Lua → Вход**.
+- Процент показывается только когда GMod действительно сообщает `SetFilesTotal/SetFilesNeeded`.
+- Динамическая тема по карте.
+- Настройки сервера, версии, подсказок и карт вынесены в `config.js`.
+- Новый локальный SVG-логотип.
+- JS написан без `URLSearchParams`, стрелочных функций и других необязательных современных API.
+- Нет внешних шрифтов, аналитики, API и CDN.
 
-## Файлы
+## Актуальные данные из переданного архива
 
-- `index.html` — разметка;
-- `styles.css` — внешний вид;
-- `script.js` — интеграция с loading callbacks GMod;
-- `.nojekyll` — отключает обработку Jekyll для простого статического сайта;
-- `server_config_example.cfg` — пример `sv_loadingurl`.
+- Server name: `Наш Sandbox`
+- Core: `v0.24.0`
+- Primary map: `gm_bigcity_improved_rp`
+- Workshop collection: `3805955116`
+- Roles: `Строитель` / `PvP` (+ admin/creator authority)
+- Safe spawn: зелёная зона
+- Core UI accent: `#4EDD7F`
+- Builder: `#5AB4FF`
+- PvP: `#E15F5F`
 
-## Быстрая публикация через GitHub Pages
+> В `server.cfg` и `srcds_workshop_ids.txt` ещё встречается старый номер `v0.23.9` в комментариях. Активный `SC.Version` и `addon.json` в архиве — `v0.24.0`, поэтому loading screen использует именно его.
 
-1. Создай на GitHub публичный репозиторий, например `nash-sandbox-loading`.
-2. Нажми **Add file → Upload files** и перетащи **содержимое этой папки** в корень репозитория.
-3. Нажми **Commit changes**.
-4. Открой **Settings → Pages**.
-5. В **Build and deployment → Source** выбери **Deploy from a branch**.
-6. Branch: `main`, folder: `/(root)`, затем **Save**.
-7. Адрес проекта будет вида `https://USERNAME.github.io/nash-sandbox-loading/`.
-8. Открой его в браузере. Для демонстрации callbacks можно открыть `...?preview=1`.
-9. На GMod-сервере добавь в `garrysmod/cfg/autoexec.cfg`:
+## Загрузка на GitHub Pages
 
-```cfg
-sv_loadingurl "https://USERNAME.github.io/nash-sandbox-loading/"
+Замени файлы в корне репозитория на содержимое этой папки:
+
+```text
+index.html
+styles.css
+script.js
+config.js
+assets/
 ```
 
-После этого перезапусти сервер или выставь convar через серверную консоль.
+После commit GitHub Pages оставит тот же URL. Серверный `sv_loadingurl` менять не нужно.
+
+## Проверка без GMod
+
+Открой опубликованную страницу так:
+
+```text
+https://YOURNAME.github.io/nash-sandbox-loading/?preview=1
+```
+
+Можно проверить тему карты:
+
+```text
+?preview=1&Map=gm_construct
+?preview=1&Map=gm_flatgrass
+```
+
+## Свой фон карты позже
+
+Положи изображение, например:
+
+```text
+assets/bigcity.webp
+```
+
+И в `config.js` у нужной карты укажи:
+
+```js
+backgroundImage: "./assets/bigcity.webp"
+```
+
+CSS-город останется фоном/подложкой, а фотография появится поверх него с затемнением.
+
+## Конфиг GMod
+
+У тебя уже прописано:
+
+```cfg
+sv_loadingurl "https://wisp887.github.io/nash-sandbox-loading/"
+```
+
+Можно оставить именно так. Дополнительные query-параметры необязательны, потому что GMod передаёт карту через `GameDetails()`.
 
 ## Важно
 
-GitHub Pages публикует сайт в интернет. Не клади в этот репозиторий GSLT, пароли, приватные конфиги, внутренние админские документы или весь архив сервера. Для loading screen нужны только файлы этой папки.
+Не загружай в этот публичный репозиторий папки `garrysmod/cfg`, серверные Lua-файлы, токены или другие приватные данные. GitHub Pages должен содержать только файлы loading screen.
