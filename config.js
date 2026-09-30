@@ -11,7 +11,7 @@ window.NASH_LOADING_CONFIG = {
     "gm_bigcity_improved_rp": {
       label: "Bigcity Improved",
       theme: "bigcity",
-      backgroundImage: ""
+      backgroundImage: "./assets/bigcity-night.jpg"
     },
     "gm_construct": {
       label: "Construct",

@@ -95,10 +95,14 @@
     if (photo) {
       if (data.backgroundImage) {
         photo.style.backgroundImage = "url('" + String(data.backgroundImage).replace(/'/g, "%27") + "')";
-        photo.style.opacity = "0.42";
+        photo.style.opacity = "0.66";
+        if (body.className.indexOf("has-map-photo") === -1) {
+          body.className += " has-map-photo";
+        }
       } else {
         photo.style.backgroundImage = "none";
         photo.style.opacity = "0";
+        body.className = body.className.replace(/\bhas-map-photo\b/g, "").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, "");
       }
     }
   }

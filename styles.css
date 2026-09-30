@@ -1,4 +1,4 @@
-/* Наш Sandbox loading screen v0.2 — без внешних шрифтов и библиотек. */
+/* Наш Sandbox loading screen v0.3 — cinematic Bigcity pass, без внешних шрифтов и библиотек. */
 * { box-sizing: border-box; }
 html, body { margin: 0; width: 100%; min-height: 100%; }
 body {
@@ -10,7 +10,10 @@ body {
 }
 
 .scene { position: fixed; inset: 0; overflow: hidden; background: #121418; pointer-events: none; }
-.map-photo { position: absolute; inset: -3%; background-position: center; background-size: cover; filter: blur(2px) saturate(.75); opacity: 0; transition: opacity .5s ease; }
+.map-photo { position: absolute; inset: -4%; background-position: center 46%; background-size: cover; filter: blur(1.4px) saturate(.82) brightness(.78) contrast(1.05); opacity: 0; transform: scale(1.035); transition: opacity .65s ease; animation: photo-breathe 24s ease-in-out infinite alternate; }
+.has-map-photo .skyline { opacity: .08; }
+.has-map-photo .skyline-far { opacity: .045; }
+.has-map-photo .scene-grid { opacity: .075; }
 .scene::before {
   content: ""; position: absolute; inset: 0;
   background:
@@ -47,7 +50,10 @@ body {
 .theme-flatgrass .skyline { display: none; }
 
 .scene-grid { position: absolute; inset: 42% -15% -25%; opacity: .13; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 54px 54px; transform: perspective(600px) rotateX(62deg) scale(1.25); transform-origin: center bottom; }
-.vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 25%, rgba(5,7,9,.15) 56%, rgba(5,7,9,.78) 100%), linear-gradient(90deg, rgba(6,8,10,.50), rgba(6,8,10,.05) 43%, rgba(6,8,10,.35)); }
+.vignette { position: absolute; inset: 0; background:
+  radial-gradient(ellipse at 42% 44%, rgba(4,7,9,.02) 0%, rgba(5,7,9,.12) 42%, rgba(5,7,9,.70) 100%),
+  linear-gradient(90deg, rgba(5,8,10,.62) 0%, rgba(5,8,10,.18) 42%, rgba(5,8,10,.48) 100%),
+  linear-gradient(180deg, rgba(7,10,13,.08) 0%, rgba(7,10,13,.04) 55%, rgba(7,10,13,.58) 100%); }
 .grain { position: absolute; inset: 0; opacity: .12; background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px); }
 
 .screen { position: relative; z-index: 2; width: 100%; max-width: 1540px; min-height: 100vh; margin: 0 auto; padding: 28px 54px 22px; display: flex; flex-direction: column; }
@@ -65,7 +71,7 @@ body {
 .hero-main { flex: 1 1 61%; min-width: 0; }
 .eyebrow { color: #4edd7f; font-size: 11px; font-weight: 900; letter-spacing: .25em; margin-bottom: 13px; text-shadow: 0 0 28px rgba(78,221,127,.22); }
 .wordmark-small { display: block; margin-left: 4px; color: #aeb6bf; font-size: 19px; font-weight: 900; letter-spacing: .42em; }
-h1 { margin: -2px 0 0; font-size: clamp(72px, 8vw, 132px); line-height: .82; letter-spacing: -.075em; font-weight: 900; color: #f0f2f5; text-shadow: 0 20px 70px rgba(0,0,0,.45); }
+h1 { margin: -2px 0 0; font-size: clamp(72px, 8vw, 132px); line-height: .82; letter-spacing: -.075em; font-weight: 900; color: #f0f2f5; text-shadow: 0 20px 70px rgba(0,0,0,.48), 0 0 44px rgba(78,221,127,.045); }
 .slogan { margin: 22px 0 0; color: #d8dde2; font-size: clamp(16px, 1.45vw, 22px); font-weight: 800; letter-spacing: .012em; }
 .slogan i { color: #4edd7f; font-style: normal; margin: 0 7px; }
 .hero-note { max-width: 700px; margin: 14px 0 0; color: #8e98a3; font-size: 13px; line-height: 1.58; }
@@ -83,7 +89,7 @@ h1 { margin: -2px 0 0; font-size: clamp(72px, 8vw, 132px); line-height: .82; let
 .mode-copy strong { display: block; font-size: 13px; }
 .mode-copy span { display: block; margin-top: 5px; color: #7e8691; font-size: 10px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.info-card { flex: 0 1 410px; width: 410px; min-width: 340px; padding: 21px; border: 1px solid rgba(100,110,125,.34); border-radius: 17px; background: rgba(20,23,28,.86); box-shadow: 0 30px 90px rgba(0,0,0,.34); }
+.info-card { flex: 0 1 410px; width: 410px; min-width: 340px; padding: 21px; border: 1px solid rgba(100,110,125,.34); border-radius: 17px; background: rgba(15,19,23,.86); box-shadow: 0 30px 90px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.018); }
 @supports ((-webkit-backdrop-filter: blur(12px)) or (backdrop-filter: blur(12px))) { .info-card, .connection-panel, .connect-state, .map-chip, .mode-card { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); } }
 .info-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
 .micro-label { color: #7e8691; font-size: 9px; line-height: 1; font-weight: 900; letter-spacing: .18em; }
@@ -105,7 +111,7 @@ h1 { margin: -2px 0 0; font-size: clamp(72px, 8vw, 132px); line-height: .82; let
 .tip-tag { padding: 4px 6px; border: 1px solid rgba(78,221,127,.22); border-radius: 5px; color: #9ee6b6; background: rgba(78,221,127,.06); font-size: 8px; font-weight: 900; letter-spacing: .08em; transition: opacity .18s ease; }
 .tip-box p { min-height: 31px; margin: 8px 0 0; color: #bdc5cc; font-size: 10px; line-height: 1.5; transition: opacity .18s ease; }
 
-.connection-panel { flex: 0 0 auto; padding: 15px 18px 14px; border: 1px solid rgba(100,110,125,.34); border-radius: 14px; background: rgba(19,22,26,.86); box-shadow: 0 20px 65px rgba(0,0,0,.22); }
+.connection-panel { flex: 0 0 auto; padding: 15px 18px 14px; border: 1px solid rgba(100,110,125,.34); border-radius: 14px; background: rgba(14,18,21,.87); box-shadow: 0 20px 65px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.018); }
 .stage-line { display: flex; align-items: center; width: 100%; padding: 1px 1px 13px; border-bottom: 1px solid rgba(100,110,125,.16); }
 .stage { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; opacity: .42; transition: opacity .2s ease; }
 .stage-dot { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(126,134,145,.35); border-radius: 50%; color: #7e8691; background: #15181d; font-size: 8px; font-weight: 900; transition: all .2s ease; }
@@ -142,6 +148,10 @@ h1 { margin: -2px 0 0; font-size: clamp(72px, 8vw, 132px); line-height: .82; let
 @keyframes indeterminate { from { left: -34%; } to { left: 110%; } }
 @keyframes drift-a { to { transform: translate(5vw,-3vh) scale(1.08); } }
 @keyframes drift-b { to { transform: translate(-4vw,4vh) scale(.92); } }
+@keyframes photo-breathe {
+  0% { transform: scale(1.035) translate3d(0,0,0); }
+  100% { transform: scale(1.075) translate3d(-.7%, -.45%, 0); }
+}
 
 @media (max-width: 1050px) {
   body { overflow: auto; }
