@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#121418" />
+  <title>Наш Sandbox — загрузка</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="grid"></div>
+    <div class="glow glow-a"></div>
+    <div class="glow glow-b"></div>
+    <div class="scanline"></div>
+  </div>
+
+  <main class="screen">
+    <header class="topbar">
+      <div class="brand" aria-label="Наш Sandbox">
+        <div class="brand-mark">НС</div>
+        <div>
+          <div class="brand-name" id="serverNameTop">Наш Sandbox</div>
+          <div class="brand-kicker">SandboxCore</div>
+        </div>
+      </div>
+
+      <div class="top-pills">
+        <span class="pill pill-live"><span class="dot"></span> сервер подключается</span>
+        <span class="pill">Core v0.24.1</span>
+      </div>
+    </header>
+
+    <section class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">СВОБОДНЫЙ SANDBOX</div>
+        <h1>Строй. Сражайся.<br><span>Экспериментируй.</span></h1>
+        <p class="lead">Два режима игры, защищённый spawn и серверные системы, которые не мешают делать то, ради чего существует Sandbox.</p>
+
+        <div class="feature-row">
+          <div class="feature feature-builder">
+            <div class="feature-icon">B</div>
+            <div>
+              <strong>Строитель</strong>
+              <span>PvP-урон выключен, noclip доступен</span>
+            </div>
+          </div>
+          <div class="feature feature-pvp">
+            <div class="feature-icon">P</div>
+            <div>
+              <strong>PvP</strong>
+              <span>Боевой режим без noclip</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="session-card">
+        <div class="card-heading">
+          <div>
+            <span class="card-label">СЕССИЯ</span>
+            <h2 id="serverName">Наш Sandbox</h2>
+          </div>
+          <div class="status-orb" title="Подключение"></div>
+        </div>
+
+        <div class="session-stats">
+          <div class="stat">
+            <span>Карта</span>
+            <strong id="mapName">gm_bigcity_improved_rp</strong>
+          </div>
+          <div class="stat">
+            <span>Режим</span>
+            <strong id="gameMode">sandbox</strong>
+          </div>
+          <div class="stat">
+            <span>Слоты</span>
+            <strong id="maxPlayers">40</strong>
+          </div>
+          <div class="stat">
+            <span>SteamID64</span>
+            <strong id="steamId">ожидание…</strong>
+          </div>
+        </div>
+
+        <div class="tip-card">
+          <span class="tip-kicker">ПОДСКАЗКА</span>
+          <p id="tipText">F2 — меню сервера и выбор режима.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="loading-panel" aria-live="polite">
+      <div class="loading-head">
+        <div>
+          <span class="loading-label">ПОДКЛЮЧЕНИЕ</span>
+          <strong id="statusText">Получаем информацию о сервере…</strong>
+        </div>
+        <div class="progress-number" id="progressNumber">0%</div>
+      </div>
+
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+        <div class="progress-shimmer"></div>
+      </div>
+
+      <div class="download-row">
+        <span id="fileStatus">Подготавливаем клиент…</span>
+        <span id="fileCount">файлы: —</span>
+      </div>
+    </section>
+
+    <footer>
+      <div><span class="key">F2</span> меню и режимы</div>
+      <div><span class="key">TAB</span> игроки и профиль</div>
+      <div class="footer-rule">Не мешай другим играть в выбранном ими стиле.</div>
+    </footer>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
