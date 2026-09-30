@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Наш Sandbox">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4edd7f" stop-opacity=".30"/><stop offset="1" stop-color="#4edd7f" stop-opacity=".035"/></linearGradient></defs>
-  <rect x="2.5" y="2.5" width="59" height="59" rx="13" fill="#0d1215" stroke="#4edd7f" stroke-width="1.5" stroke-opacity=".62"/>
-  <rect x="8" y="8" width="48" height="48" rx="9" fill="url(#g)" stroke="#ffffff" stroke-opacity=".045"/>
-  <path d="M17 18v28M29 18v28M17 32h12" fill="none" stroke="#f4f6f7" stroke-width="5" stroke-linecap="square"/>
-  <path d="M47 22.5c-2.2-2.8-5-4.5-8.2-4.5-6.1 0-10.8 5.7-10.8 14s4.7 14 10.8 14c3.2 0 6-1.6 8.2-4.5" fill="none" stroke="#4edd7f" stroke-width="4" stroke-linecap="round"/>
-  <path d="M52 11h-5M52 11v5" stroke="#4edd7f" stroke-width="1.5" stroke-linecap="round" opacity=".7"/>
-</svg>
